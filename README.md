@@ -12,7 +12,7 @@ Além disso, utiliza **MediatR** para orquestrar os handlers de forma desacoplad
 
 ## Funcionalidades
 
-- CRUD completo de animes (título, descrição, gênero, número de episódios, imagem).  
+- CRUD completo de animes (Criar, Editar, Apagar, Buscar).  
 - Estrutura baseada em **Clean Architecture / Clean Code**.  
 - Uso de **MediatR** para mediar requisições e organizar handlers.  
 - Logs com **Serilog**.  
