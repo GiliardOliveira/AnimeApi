@@ -49,10 +49,32 @@ internal class Program
         var app = builder.Build();
 
         using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+    var db = scope.ServiceProvider.GetRequiredService<AnimeDbContext>();
+
+    var attempts = 0;
+    var maxAttempts = 10;
+    var delay = TimeSpan.FromSeconds(3);
+
+    while (true)
+    {
+        try
         {
-            var db = scope.ServiceProvider.GetRequiredService<AnimeDbContext>();
+            logger.LogInformation("Aplicando migrations...");
             db.Database.Migrate();
+            logger.LogInformation("Migrations aplicadas com sucesso.");
+            break;
         }
+        catch (Exception ex)
+        {
+            attempts++;
+            logger.LogWarning(ex, "Falha ao aplicar migrations (tentativa {Attempt}/{Max}).", attempts, maxAttempts);
+            if (attempts >= maxAttempts) throw;
+            Thread.Sleep(delay); // ✅ espera síncrona entre tentativas
+        }
+    }
+}
 
 
         // Configure the HTTP request pipeline.

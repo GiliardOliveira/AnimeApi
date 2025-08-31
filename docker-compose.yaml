@@ -2,13 +2,22 @@ version: '3.9'
 
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "5000:80"         # localhost:5000 -> container:80
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      # Sobrescreve a connection string do appsettings via Provider de Config do .NET
       - ConnectionStrings__DefaultConnection=Server=db;Database=AnimeDb;User Id=sa;Password=MinhaSenha123!;TrustServerCertificate=True;MultipleActiveResultSets=true
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    # Aguarda porta 1433 responder antes de iniciar a API (sem precisar instalar nc/sqlcmd)
+    command: ["bash", "-c", "until </dev/tcp/db/1433; do echo 'Aguardando SQL Server...'; sleep 2; done; echo 'SQL ok'; dotnet AnimesApi.dll"]
+    restart: unless-stopped
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -17,3 +26,15 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/1433'"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  sql_data:
