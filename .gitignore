@@ -1,0 +1,53 @@
+# Build Folders
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# DotCover
+*.dotCover
+
+# Visual Studio Code
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+*.snupkg
+
+# ASP.NET temporary files
+*.log
+*.vspscc
+*.pdb
+
+# SQL Server LocalDB
+*.mdf
+*.ldf
+
+# Publish output
+publish/
+*.pubxml
+*.publishproj
+
+# Node/npm (se você usar front-end)
+node_modules/
+npm-debug.log
+
+# Others
+*.DS_Store
+*.bak
+*.swp
