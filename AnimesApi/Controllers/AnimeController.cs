@@ -26,7 +26,7 @@ namespace AnimesApi.Controllers
         /// </summary>
         /// <remarks>
         /// Este endpoint recebe um objeto com os detalhes do anime e o salva no banco de dados.
-        /// Um exemplo de corpossssss da requisição é mostrado abaixo.
+        /// Um exemplo de corpo da requisição é mostrado abaixo.
         ///
         ///     POST /api/Animes
         ///     {
